@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="style.css">
+<body>
+<div class="head">
+<h1>Json to POJO converter </h1>
+</div>
+<div class="about">
+    <p>I am julian,I am creator of this converter.You can paste your json on the text area
+        and convert it to the POJO.After converting you can also able to downlaod the java file.
+    </p>
+</div>
+<div class="container">
+    <div class="jsoncontainer">
+    Enter your json here:<br>
+    <textarea id="myTextarea">
+    </textarea>
+</div>
+<div class="POJOcontainer">
+    your POJO  is here for you:<br>
+    <textarea id="myTextareaP">
+    </textarea>
+</div>
+</div>
+
+
+<div class="message">
+<p id="warning" style="color: red;"></p>
+<p id="sucess" style="color: green;"></p>
+</div>
+
+<div class="buttoncontainer">
+<button type="button" class="convert" onclick="myFunction()">Convert</button>
+<button type="button" id="down" class="down" disabled='true' onclick="downloadjson()">download POJO</button>
+</div>
+<p id="thanks"></p>
+
+<script>
+    var string1="import java.util.*;\npublic class Converted {\n\n";
+function myFunction() {
+    document.getElementById("warning").innerHTML='';
+     document.getElementById("sucess").innerHTML='';
+
+ var str=document.getElementById("myTextarea").value;
+ if(IsValidJSONString(str))
+ {  document.getElementById("down").disabled = false;
+     var obj=JSON.parse(str);
+      document.getElementById("sucess").innerHTML='sucess now you can download corresponding POJO class';
+      
+      for (let key in obj) {
+     let value = obj[key];
+     if(typeof(value)=='number')
+     {  if(Number.isInteger(value))
+         {string1=string1.concat("private Integer "+key+";\n");}
+        else
+        {
+        string1=string1.concat("private Double "+key+";\n");
+        }
+
+     }
+     else if(typeof(value)=='string')
+     {
+         string1=string1.concat("private String "+key+";\n");
+     }
+     else if(typeof(value)=='boolean')
+     {
+         string1=string1.concat("private Boolean "+key+";\n");
+     }
+     else if(typeof(value)=='object')
+     { var dt="";
+         if(typeof(value[0])=='number')
+         {
+             dt=Number.isInteger(value[0])?"Integer":"Double";
+
+         }
+         else if(typeof(value[0])=='string')
+         {
+             dt="String";
+         }
+         else if(typeof(value[0])=='boolean')
+         {
+             dt="Boolean";
+         }
+         
+          string1=string1.concat("private List<"+dt+"> "+key+";\n");
+     }
+
+
+}
+ for (let key in obj) {
+     let value = obj[key];
+     var capkey="";
+     if(typeof(value)=='number')
+     {  if(Number.isInteger(value))
+        {   capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            string1=string1.concat("public  Integer get"+capkey+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            string1=string1.concat("public  Integer set"+capkey+"(int "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+        }
+        else
+        {
+            capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            string1=string1.concat("public  Double get"+capkey+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            string1=string1.concat("public  void set"+capkey+"(double "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+        }
+
+     }
+     else if(typeof(value)=='string')
+     {
+            capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            string1=string1.concat("public  String get"+capkey+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            string1=string1.concat("public  void set"+capkey+"(String "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     else if(typeof(value)=='boolean')
+     {
+         capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            string1=string1.concat("public  Boolean get"+capkey+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            string1=string1.concat("public  void set"+capkey+"(boolean "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     else if(typeof(value)=='object')
+     { var dt="";
+         if(typeof(value[0])=='number')
+         {
+             dt=Number.isInteger(value[0])?"Integer":"Double";
+
+         }
+         else if(typeof(value[0])=='string')
+         {
+             dt="String";
+         }
+         else if(typeof(value[0])=='boolean')
+         {
+             dt="Boolean";
+         }
+         
+          capkey=key.charAt(0).toUpperCase()+key.slice(1);
+            string1=string1.concat("public  List<"+dt+"> get"+capkey+"()\n"+"{"+"\n"+"    "+"return "+key+";\n}\n");
+            string1=string1.concat("public  void set"+capkey+"(List<"+dt+"> "+key+")\n"+"{"+"\n"+"    "+"this."+key+"="+key+";\n}\n");
+     }
+     
+
+}
+string1=string1.concat("}");
+document.getElementById("myTextareaP").value=string1;
+ }
+ else
+ {
+     document.getElementById("warning").innerHTML='please enter a proper json format';
+ }
+
+
+
+
+
+};
+function IsValidJSONString(str) {
+try {
+JSON. parse(str);
+} catch (e) {
+return false;
+}
+return true;
+}
+ function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+function downloadjson()
+{
+    download('converted_Pojo.java',string1);
+    document.getElementById("thanks").innerHTML='Thanks for using this my converter';
+}
+</script>
+
+</body>
+</html>

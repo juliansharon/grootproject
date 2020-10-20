@@ -1,0 +1,75 @@
+#myTextarea
+{
+    width:45%;
+    height:400px;
+}
+#myTextareaP
+{
+    width:45%;
+    height:400px;
+}
+body
+{
+    background-color: #C3A9FF;
+}
+h1
+{
+    text-align: center;
+}
+.container
+{
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+    margin: 20px 100px;
+}
+.jsoncontainer
+{
+    flex:1;
+}
+.POJOcontainer
+{
+    flex:1;
+}
+.buttoncontainer
+{
+   text-align: center;
+}
+.convert
+{
+    background-color: blue;
+    color: white;
+    font-size: 30px;
+    border: none;
+}
+.convert:hover
+{
+    background-color:lightblue;
+    color: black;
+    font-size: 30px;
+    border: none;
+}
+p{
+    text-align: center;
+
+}
+.down
+{
+    background-color: green;
+    color: white;
+    font-size: 30px;
+    border: none;
+}
+.down:hover
+{
+    background-color: lightgreen;
+    color: black;
+    font-size: 30px;
+    border: none;
+}
+.about 
+{
+width: 50%;
+margin: 0 auto;
+color: white;
+}
